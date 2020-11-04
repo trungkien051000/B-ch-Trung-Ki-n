@@ -1,0 +1,315 @@
+---------------------------------Activity_main.xml------------------------------------------------------------
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    tools:context="com.example.pc.sqlite.MainActivity">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:weightSum="3"
+        android:layout_height="wrap_content">
+    <TextView
+        android:id="@+id/tv_id"
+        android:layout_weight="2"
+        android:text="ID"
+        android:textColor="#000000"
+        android:textSize="18dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <EditText
+        android:id="@+id/et_id"
+        android:inputType="number"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"/>
+</LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:weightSum="3"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_weight="2"
+            android:text="Name"
+            android:textColor="#000000"
+            android:textSize="18dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <EditText
+            android:id="@+id/et_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:weightSum="3"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/tv_toan"
+            android:layout_weight="2"
+            android:text="Diem Toan"
+            android:textColor="#000000"
+            android:textSize="18dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <EditText
+            android:id="@+id/et_toan"
+            android:inputType="number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:weightSum="3"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/tv_li"
+            android:layout_weight="2"
+            android:text="Diem Li"
+            android:textColor="#000000"
+            android:textSize="18dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <EditText
+            android:id="@+id/et_li"
+            android:inputType="number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:weightSum="3"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/tv_hoa"
+            android:layout_weight="2"
+            android:text="Diem Hoa"
+            android:textColor="#000000"
+            android:textSize="18dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <EditText
+            android:id="@+id/et_hoa"
+            android:inputType="number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:weightSum="3"
+        android:layout_height="wrap_content">
+
+        <Button
+        android:layout_weight="1"
+        android:id="@+id/btn_them"
+        android:text="Them"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+        <Button
+            android:layout_weight="1"
+            android:id="@+id/btn_sua"
+            android:text="Sua"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <Button
+            android:layout_weight="1"
+            android:id="@+id/btn_xoa"
+            android:text="Xoa"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        </LinearLayout>
+</LinearLayout>
+
+---------------------------------MyDatabase.java------------------------------------------------------------
+package com.example.pc.sqlite;
+
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+
+public class MyDatabase extends SQLiteOpenHelper {
+    private static final String DATABASE_NAME ="SV.db";
+    private static final String TABLE_NAME = "Sinhvien";
+    private static final String COL_1="ID";
+    private static final String COL_2="Name";
+    private static final String COL_3="Toan";
+    private static final String COL_4="Li";
+    private static final String COL_5="Hoa";
+
+    public  MyDatabase(Context context){
+        super(context,DATABASE_NAME,null,1);
+    }
+
+    @Override
+    public void onCreate(SQLiteDatabase sqLiteDatabase) {
+        sqLiteDatabase.execSQL("create table " + TABLE_NAME + " (" + COL_1 + " INTEGER PRIMARY KEY AUTOINCREMENT,"+
+                COL_2 + "TEXT," + COL_3 + "INTEGER," + COL_4 +"INTEGER,"+ COL_5 +"INTEGER)");
+    }
+
+    @Override
+    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
+sqLiteDatabase.execSQL("DROP TABLE IN EXISTS"+TABLE_NAME);
+        onCreate(sqLiteDatabase);
+    }
+    public boolean insertData(String name,String toan,String li,String hoa){
+        SQLiteDatabase db=this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COL_2,name);
+        values.put(COL_3,toan);
+        values.put(COL_4,li);
+        values.put(COL_5,hoa);
+        long result = db.insert(TABLE_NAME,null,values);
+        if(result == - 1)
+        {
+            return false;
+        }
+        else
+            return true;
+    }
+    public boolean updateData(String id,String name,String toan,String li,String hoa){
+        SQLiteDatabase db=this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COL_1,id);
+        values.put(COL_2,name);
+        values.put(COL_3,toan);
+        values.put(COL_4,li);
+        values.put(COL_5,hoa);
+        long result = db.update(TABLE_NAME,values,COL_1+"=?",new String[]{id});
+
+        if(result == - 1)
+        {
+            return false;
+        }
+        else
+            return true;
+    }
+    public boolean deleteData(String id){
+        SQLiteDatabase db=this.getWritableDatabase();
+        long result = db.delete(TABLE_NAME,COL_1+"=?",new String[]{id});
+        if(result == - 1)
+        {
+            return false;
+        }
+        else
+            return true;
+    }
+}
+
+---------------------------------MainActivity.java------------------------------------------------------------
+package com.example.pc.sqlite;
+
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
+
+public class MainActivity extends AppCompatActivity {
+    private Button btnThem;
+    private Button btnSua;
+    private Button btnXoa;
+    private EditText etID;
+    private EditText etName;
+    private EditText etToan;
+    private EditText etLi;
+    private EditText etHoa ;
+    private MyDatabase myDatabase;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        myDatabase=new MyDatabase(this);
+        initView();
+        initListener();
+    }
+    private void initListener(){
+        btnThem.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                String name = etName.getText().toString();
+                String toan = etToan.getText().toString();
+                String li = etLi.getText().toString();
+                String hoa = etHoa.getText().toString();
+                boolean bl = myDatabase.insertData(name,toan,li,hoa);
+                if(bl){
+                    Toast.makeText(MainActivity.this,"Them thanh cong", Toast.LENGTH_SHORT).show();
+
+                }
+                else
+                    Toast.makeText(MainActivity.this,"Them that bai", Toast.LENGTH_SHORT).show();
+            }
+
+        });
+        btnSua.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                String id = etID.getText().toString();
+                String name = etName.getText().toString();
+                String toan = etToan.getText().toString();
+                String li = etLi.getText().toString();
+                String hoa = etHoa.getText().toString();
+                boolean bl = myDatabase.updateData(id,name,toan,li,hoa);
+                if(bl){
+                    Toast.makeText(MainActivity.this,"Sua thanh cong", Toast.LENGTH_SHORT).show();
+
+                }
+                else
+                    Toast.makeText(MainActivity.this,"Sua that bai", Toast.LENGTH_SHORT).show();
+            }
+
+
+        });
+        btnXoa.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                String id = etID.getText().toString();
+                boolean bl = myDatabase.deleteData(id);
+                if(bl){
+                    Toast.makeText(MainActivity.this,"Xoa thanh cong", Toast.LENGTH_SHORT).show();
+
+                }
+                else
+                    Toast.makeText(MainActivity.this,"Xoa that bai", Toast.LENGTH_SHORT).show();
+
+            }
+
+        });
+
+
+    }
+    private void initView(){
+
+        btnThem=(Button) findViewById(R.id.btn_them);
+        btnSua=(Button) findViewById(R.id.btn_sua);
+        btnXoa=(Button) findViewById(R.id.btn_xoa);
+        etID = (EditText) findViewById(R.id.et_id);
+        etName = (EditText) findViewById(R.id.et_name);
+        etToan = (EditText) findViewById(R.id.et_toan);
+        etLi = (EditText) findViewById(R.id.et_li);
+        etHoa = (EditText) findViewById(R.id.et_hoa);
+
+
+    }
+}
